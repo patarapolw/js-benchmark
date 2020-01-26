@@ -1,12 +1,19 @@
 {
   "name": "js-benchmark",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "index.js",
   "scripts": {
+    "browser:create": "node ./browser/create.js",
+    "deploy": "node ./browser/create.js && gh-pages -d dist",
     "start": "node ./node/index.js"
   },
   "dependencies": {
     "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0",
+    "glob": "^7.1.6",
+    "rimraf": "^3.0.0"
   }
 }
