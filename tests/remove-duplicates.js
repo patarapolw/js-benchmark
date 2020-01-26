@@ -1,4 +1,4 @@
-module.exports = {
+var suite = {
   name: 'Remove duplicates',
   iterations: 1000,
   // For the idea, see http://jsben.ch/
