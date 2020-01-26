@@ -1,0 +1,49 @@
+name: Remove duplicates
+iterations: 1000
+setup: !<tag:yaml.org,2002:js/function> |-
+  () => {
+      Array.prototype.shuffle = function() {
+        for (let i = this.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this[i], this[j]] = [this[j], this[i]];
+        }
+        return this;
+      }
+
+      return {
+        a: Array.from({ length: 1000 })
+          .map((_, i) => [i, i])
+          .reduce(((x, y) => [...x, ...y]))
+          .shuffle()
+      }
+    }
+beforeEach: !<tag:yaml.org,2002:js/function> |-
+  (r) => {
+      return r
+    }
+afterEach: !<tag:yaml.org,2002:js/function> |-
+  (r) => {
+      return r
+    }
+tests:
+  - name: Set => Array
+    test: !<tag:yaml.org,2002:js/function> |-
+      (r) => {
+              return [...(new Set(r.a))]
+            }
+    duration: 0.07538902759552002
+  - name: Object from keys => Array
+    description: 'Apparently, Object keys automatically converts to String'
+    test: !<tag:yaml.org,2002:js/function> |-
+      (r) => {
+              const o = {}
+              r.a.map((x) => o[x] = null)
+              return Object.keys(o).map(Number)
+            }
+    duration: 0.10072201490402222
+  - name: Filter to keep ordering
+    test: !<tag:yaml.org,2002:js/function> |-
+      (r) => {
+              return r.a.filter((x, i, v) => v.indexOf(x) == i)
+            }
+    duration: 1.709751009941101
