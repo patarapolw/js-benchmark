@@ -14,14 +14,11 @@ const tests = glob.sync('*.js', {
   fs.writeFileSync(
     path.join(__dirname, '../dist/tests', f.replace(/.js$/, '.html')),
     `
-<pre id="result"></pre>
-<script src="./${f}"></script>
-<script src="../runner.js"></script>`
-  )
-
-  fs.copyFileSync(
-    path.join(__dirname, 'tests', f),
-    path.join(__dirname, '../dist/tests', f),
+<div id="result"></div>
+<br/>
+<small>View source to see more information</small>
+<script id="test-suite">${fs.readFileSync(path.join(__dirname, 'tests', f), 'utf8')}</script>
+<script id="test-runner">${fs.readFileSync(path.join(__dirname, 'runner.js'), 'utf8')}</script>`
   )
 
   return f
@@ -30,9 +27,4 @@ const tests = glob.sync('*.js', {
 fs.writeFileSync(
   path.join(__dirname, '../dist/index.html'),
   tests.map((f) => `<p><a href="./tests/${f.replace(/.js$/, '.html')}">${f}</a></p>`)
-)
-
-fs.copyFileSync(
-  path.join(__dirname, 'runner.js'),
-  path.join(__dirname, '../dist/runner.js')
 )
